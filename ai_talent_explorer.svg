@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720" height="920" viewBox="0 0 720 920">
+<defs>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+* { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+.toggle-group { display: inline-flex; border-radius: 8px; border: 1px solid #d6dadd; overflow: hidden; background: #f5f6f8; }
+.toggle-btn { padding: 7px 14px; border: none; background: transparent; color: #4a4a4a; font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: 'Inter', system-ui, sans-serif; white-space: nowrap; letter-spacing: 0.01em; transition: all 0.15s ease; line-height: 1.3; }
+.toggle-btn:hover:not(.active):not(:disabled) { background: #e8eaed; }
+.toggle-btn.active { background: #2a2a2a; color: #fff; font-weight: 600; }
+.toggle-btn:disabled { color: #b0b5bb; cursor: not-allowed; }
+.bar-rect { transition: width 0.45s cubic-bezier(0.23, 1, 0.32, 1); }
+.switch-track { display: inline-block; width: 34px; height: 18px; border-radius: 9px; background: #d6dadd; position: relative; transition: background 0.2s; cursor: pointer; flex-shrink: 0; vertical-align: middle; }
+.switch-track.on { background: #6c9fc6; }
+.switch-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 7px; background: #fff; transition: left 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+.switch-track.on .switch-thumb { left: 18px; }
+.excl-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #4a4a4a; cursor: pointer; user-select: none; }
+</style>
+</defs>
+
+<rect width="720" height="920" fill="#ffffff"/>
+<line x1="20" y1="56" x2="700" y2="56" stroke="#202020" stroke-width="2"/>
+<text x="20" y="32" font-size="20" font-weight="700" fill="#202020" letter-spacing="-0.4">Global AI Talent Distribution</text>
+<text x="20" y="50" font-size="12.5" fill="#6b7280" font-weight="400">Top 25 rankings across countries and metropolitan areas</text>
+
+<foreignObject x="16" y="66" width="690" height="46">
+<div xmlns="http://www.w3.org/1999/xhtml" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:4px;">
+<div class="toggle-group" id="geo-group">
+<button class="toggle-btn active" data-val="countries" onclick="setGeo('countries')">Countries</button>
+<button class="toggle-btn" data-val="metros" onclick="setGeo('metros')">Metro areas</button>
+</div>
+<div class="toggle-group" id="measure-group">
+<button class="toggle-btn active" data-val="absolute" onclick="setMeasure('absolute')">Absolute</button>
+<button class="toggle-btn" data-val="percapita" onclick="setMeasure('percapita')">Per capita</button>
+</div>
+<div class="toggle-group" id="tier-group">
+<button class="toggle-btn" data-val="0" onclick="setTier(0)">Tier 0</button>
+<button class="toggle-btn active" data-val="1" onclick="setTier(1)">Tier 1</button>
+<button class="toggle-btn" data-val="2" onclick="setTier(2)">Tier 2</button>
+</div>
+</div>
+</foreignObject>
+
+<foreignObject x="16" y="112" width="690" height="28">
+<div xmlns="http://www.w3.org/1999/xhtml" id="excl-container" style="display:none;text-align:right;padding-right:4px;">
+<label class="excl-toggle" onclick="toggleExcl()">
+<span class="switch-track" id="excl-track"><span class="switch-thumb"></span></span>
+<span>Excl. India &amp; US</span>
+</label>
+</div>
+</foreignObject>
+
+<text id="chart-title" x="20" y="156" font-size="14" font-weight="600" fill="#202020" letter-spacing="-0.14"></text>
+<text id="axis-label" x="20" y="172" font-size="10.5" fill="#8b8f96" letter-spacing="0.6" font-weight="500"></text>
+<g id="chart-area" transform="translate(0, 180)"></g>
+
+<text id="source-text" x="700" y="908" font-size="10.5" fill="#9ca3af" text-anchor="end">Source: Revelio Labs, Sept. 2025 — analysed by Interface</text>
+<line id="source-line" x1="20" y1="892" x2="700" y2="892" stroke="#e5e7eb" stroke-width="1"/>
+
+<script type="text/javascript">
+// <![CDATA[
+var CHART_DATA = {"countries_absolute_tier0": {"title": "Top 25 countries by AI talent \u2014 Tier 0", "data": [{"name": "India", "value": 195382.0}, {"name": "United States", "value": 171314.0}, {"name": "United Kingdom", "value": 34911.0}, {"name": "Germany", "value": 24641.0}, {"name": "Canada", "value": 23057.0}, {"name": "Italy", "value": 13986.0}, {"name": "Australia", "value": 13579.0}, {"name": "Netherlands", "value": 9484.0}, {"name": "France", "value": 6730.0}, {"name": "Switzerland", "value": 6549.0}, {"name": "Turkey", "value": 5216.0}, {"name": "Spain", "value": 5214.0}, {"name": "South Korea", "value": 4027.0}, {"name": "Ireland", "value": 3901.0}, {"name": "Japan", "value": 3651.0}, {"name": "Israel", "value": 3480.0}, {"name": "Belgium", "value": 2875.0}, {"name": "Sweden", "value": 2869.0}, {"name": "Mexico", "value": 2658.0}, {"name": "Denmark", "value": 2370.0}, {"name": "Greece", "value": 2329.0}, {"name": "Finland", "value": 2247.0}, {"name": "Portugal", "value": 2203.0}, {"name": "Austria", "value": 2088.0}, {"name": "Poland", "value": 2011.0}], "geo": "countries", "measure": "absolute", "tier": 0, "excl_inus": false}, "countries_absolute_tier1": {"title": "Top 25 countries by AI talent \u2014 Tier 1", "data": [{"name": "United States", "value": 690267.0}, {"name": "India", "value": 688301.0}, {"name": "Canada", "value": 94229.0}, {"name": "United Kingdom", "value": 90913.0}, {"name": "Germany", "value": 75447.0}, {"name": "Australia", "value": 39296.0}, {"name": "Italy", "value": 35729.0}, {"name": "Netherlands", "value": 29965.0}, {"name": "Israel", "value": 19578.0}, {"name": "France", "value": 18574.0}, {"name": "Spain", "value": 17905.0}, {"name": "Switzerland", "value": 17234.0}, {"name": "Ireland", "value": 16354.0}, {"name": "Turkey", "value": 14850.0}, {"name": "Sweden", "value": 11214.0}, {"name": "Denmark", "value": 9814.0}, {"name": "Japan", "value": 8893.0}, {"name": "South Korea", "value": 8846.0}, {"name": "Poland", "value": 8274.0}, {"name": "Belgium", "value": 8144.0}, {"name": "Portugal", "value": 7746.0}, {"name": "Mexico", "value": 7655.0}, {"name": "Finland", "value": 7266.0}, {"name": "Austria", "value": 5899.0}, {"name": "Greece", "value": 5859.0}], "geo": "countries", "measure": "absolute", "tier": 1, "excl_inus": false}, "countries_absolute_tier2": {"title": "Top 25 countries by AI talent \u2014 Tier 2", "data": [{"name": "United States", "value": 140257.0}, {"name": "India", "value": 108105.0}, {"name": "United Kingdom", "value": 19637.0}, {"name": "Germany", "value": 17248.0}, {"name": "Canada", "value": 15994.0}, {"name": "Australia", "value": 7210.0}, {"name": "Israel", "value": 7202.0}, {"name": "Italy", "value": 6908.0}, {"name": "Netherlands", "value": 6369.0}, {"name": "South Korea", "value": 5517.0}, {"name": "Switzerland", "value": 4940.0}, {"name": "Spain", "value": 4469.0}, {"name": "France", "value": 4085.0}, {"name": "Japan", "value": 3058.0}, {"name": "Turkey", "value": 2710.0}, {"name": "Sweden", "value": 2312.0}, {"name": "Poland", "value": 1901.0}, {"name": "Ireland", "value": 1785.0}, {"name": "Denmark", "value": 1677.0}, {"name": "Belgium", "value": 1646.0}, {"name": "Finland", "value": 1447.0}, {"name": "Portugal", "value": 1408.0}, {"name": "Austria", "value": 1377.0}, {"name": "Mexico", "value": 1045.0}, {"name": "Greece", "value": 910.0}], "geo": "countries", "measure": "absolute", "tier": 2, "excl_inus": false}, "countries_absolute_tier2_excl": {"title": "Top 25 countries by AI talent (excl. IN & US) \u2014 Tier 2", "data": [{"name": "United Kingdom", "value": 19637.0}, {"name": "Germany", "value": 17248.0}, {"name": "Canada", "value": 15994.0}, {"name": "Australia", "value": 7210.0}, {"name": "Israel", "value": 7202.0}, {"name": "Italy", "value": 6908.0}, {"name": "Netherlands", "value": 6369.0}, {"name": "South Korea", "value": 5517.0}, {"name": "Switzerland", "value": 4940.0}, {"name": "Spain", "value": 4469.0}, {"name": "France", "value": 4085.0}, {"name": "Japan", "value": 3058.0}, {"name": "Turkey", "value": 2710.0}, {"name": "Sweden", "value": 2312.0}, {"name": "Poland", "value": 1901.0}, {"name": "Ireland", "value": 1785.0}, {"name": "Denmark", "value": 1677.0}, {"name": "Belgium", "value": 1646.0}, {"name": "Finland", "value": 1447.0}, {"name": "Portugal", "value": 1408.0}, {"name": "Austria", "value": 1377.0}, {"name": "Mexico", "value": 1045.0}, {"name": "Greece", "value": 910.0}, {"name": "Czech Republic", "value": 839.0}, {"name": "New Zealand", "value": 776.0}], "geo": "countries", "measure": "absolute", "tier": 2, "excl_inus": true}, "countries_percapita_tier0_excl": {"title": "Top 25 countries by AI talent per capita (excl. IN & US) \u2014 Tier 0", "data": [{"name": "Ireland", "value": 0.74}, {"name": "Switzerland", "value": 0.74}, {"name": "Canada", "value": 0.58}, {"name": "Netherlands", "value": 0.53}, {"name": "United Kingdom", "value": 0.51}, {"name": "Australia", "value": 0.51}, {"name": "Finland", "value": 0.4}, {"name": "Denmark", "value": 0.4}, {"name": "Israel", "value": 0.36}, {"name": "New Zealand", "value": 0.31}, {"name": "Germany", "value": 0.29}, {"name": "Sweden", "value": 0.27}, {"name": "Norway", "value": 0.26}, {"name": "Belgium", "value": 0.24}, {"name": "Italy", "value": 0.24}, {"name": "Austria", "value": 0.23}, {"name": "Greece", "value": 0.22}, {"name": "Portugal", "value": 0.21}, {"name": "Spain", "value": 0.11}, {"name": "Hungary", "value": 0.11}, {"name": "France", "value": 0.1}, {"name": "Poland", "value": 0.05}, {"name": "Japan", "value": 0.03}, {"name": "Mexico", "value": 0.02}], "geo": "countries", "measure": "percapita", "tier": 0, "excl_inus": true}, "countries_percapita_tier1": {"title": "Top 25 countries by AI talent per capita \u2014 Tier 1", "data": [{"name": "Ireland", "value": 3.11}, {"name": "Canada", "value": 2.35}, {"name": "United States", "value": 2.06}, {"name": "Israel", "value": 2.01}, {"name": "Switzerland", "value": 1.95}, {"name": "Netherlands", "value": 1.68}, {"name": "Denmark", "value": 1.65}, {"name": "Australia", "value": 1.48}, {"name": "United Kingdom", "value": 1.33}, {"name": "Finland", "value": 1.3}, {"name": "Sweden", "value": 1.06}, {"name": "New Zealand", "value": 0.96}, {"name": "Germany", "value": 0.89}, {"name": "Norway", "value": 0.87}, {"name": "Portugal", "value": 0.74}, {"name": "Belgium", "value": 0.69}, {"name": "Austria", "value": 0.65}, {"name": "Italy", "value": 0.61}, {"name": "Greece", "value": 0.57}, {"name": "India", "value": 0.48}, {"name": "Spain", "value": 0.37}, {"name": "Hungary", "value": 0.37}, {"name": "France", "value": 0.27}, {"name": "Poland", "value": 0.23}, {"name": "Japan", "value": 0.07}], "geo": "countries", "measure": "percapita", "tier": 1, "excl_inus": false}, "countries_percapita_tier2": {"title": "Top 25 countries by AI talent per capita \u2014 Tier 2", "data": [{"name": "Israel", "value": 0.74}, {"name": "Switzerland", "value": 0.56}, {"name": "United States", "value": 0.42}, {"name": "Canada", "value": 0.4}, {"name": "Netherlands", "value": 0.36}, {"name": "Ireland", "value": 0.34}, {"name": "United Kingdom", "value": 0.29}, {"name": "Denmark", "value": 0.28}, {"name": "Australia", "value": 0.27}, {"name": "Finland", "value": 0.26}, {"name": "Sweden", "value": 0.22}, {"name": "Germany", "value": 0.2}, {"name": "Austria", "value": 0.15}, {"name": "New Zealand", "value": 0.15}, {"name": "Belgium", "value": 0.14}, {"name": "Portugal", "value": 0.13}, {"name": "Norway", "value": 0.13}, {"name": "Italy", "value": 0.12}, {"name": "Spain", "value": 0.09}, {"name": "Greece", "value": 0.09}, {"name": "India", "value": 0.08}, {"name": "Hungary", "value": 0.07}, {"name": "France", "value": 0.06}, {"name": "Poland", "value": 0.05}, {"name": "Japan", "value": 0.02}], "geo": "countries", "measure": "percapita", "tier": 2, "excl_inus": false}, "metros_absolute_tier0": {"title": "Top 25 metropolitan areas by AI talent \u2014 Tier 0", "data": [{"name": "Bengaluru (IN)", "value": 11374.0}, {"name": "San Francisco (US)", "value": 8624.0}, {"name": "London (GB)", "value": 8233.0}, {"name": "San Jose (US)", "value": 7519.0}, {"name": "Seattle (US)", "value": 7434.0}, {"name": "New York (US)", "value": 7057.0}, {"name": "Paris (FR)", "value": 6392.0}, {"name": "Delhi (IN)", "value": 5601.0}, {"name": "Hyderabad (IN)", "value": 4126.0}, {"name": "Boston (US)", "value": 3855.0}, {"name": "Seoul (KR)", "value": 2925.0}, {"name": "Pune (IN)", "value": 2909.0}, {"name": "Toronto (CA)", "value": 2873.0}, {"name": "Mumbai (IN)", "value": 2641.0}, {"name": "Berlin (DE)", "value": 2359.0}, {"name": "Amsterdam (NL)", "value": 2352.0}, {"name": "Chennai (IN)", "value": 2328.0}, {"name": "Los Angeles (US)", "value": 2325.0}, {"name": "Washington (US)", "value": 2193.0}, {"name": "Chicago (US)", "value": 2169.0}, {"name": "Tokyo (JP)", "value": 1938.0}, {"name": "Sydney (AU)", "value": 1677.0}, {"name": "Austin (US)", "value": 1605.0}, {"name": "Istanbul (TR)", "value": 1584.0}, {"name": "Madrid (ES)", "value": 1560.0}], "geo": "metros", "measure": "absolute", "tier": 0, "excl_inus": false}, "metros_absolute_tier1": {"title": "Top 25 metropolitan areas by AI talent \u2014 Tier 1", "data": [{"name": "Bengaluru (IN)", "value": 40069.0}, {"name": "San Francisco (US)", "value": 34749.0}, {"name": "San Jose (US)", "value": 30296.0}, {"name": "Seattle (US)", "value": 29954.0}, {"name": "New York (US)", "value": 28436.0}, {"name": "London (GB)", "value": 21440.0}, {"name": "Delhi (IN)", "value": 19730.0}, {"name": "Paris (FR)", "value": 17640.0}, {"name": "Boston (US)", "value": 15531.0}, {"name": "Hyderabad (IN)", "value": 14536.0}, {"name": "Toronto (CA)", "value": 11740.0}, {"name": "Pune (IN)", "value": 10247.0}, {"name": "Los Angeles (US)", "value": 9367.0}, {"name": "Mumbai (IN)", "value": 9304.0}, {"name": "Washington (US)", "value": 8836.0}, {"name": "Chicago (US)", "value": 8741.0}, {"name": "Chennai (IN)", "value": 8202.0}, {"name": "Amsterdam (NL)", "value": 7432.0}, {"name": "Berlin (DE)", "value": 7222.0}, {"name": "Austin (US)", "value": 6466.0}, {"name": "Seoul (KR)", "value": 6424.0}, {"name": "Atlanta (US)", "value": 5637.0}, {"name": "Madrid (ES)", "value": 5357.0}, {"name": "San Diego (US)", "value": 5196.0}, {"name": "Sydney (AU)", "value": 4853.0}], "geo": "metros", "measure": "absolute", "tier": 1, "excl_inus": false}, "metros_absolute_tier2": {"title": "Top 25 metropolitan areas by AI talent \u2014 Tier 2", "data": [{"name": "San Francisco (US)", "value": 7061.0}, {"name": "Bengaluru (IN)", "value": 6293.0}, {"name": "San Jose (US)", "value": 6156.0}, {"name": "Seattle (US)", "value": 6087.0}, {"name": "New York (US)", "value": 5778.0}, {"name": "London (GB)", "value": 4631.0}, {"name": "Seoul (KR)", "value": 4007.0}, {"name": "Paris (FR)", "value": 3880.0}, {"name": "Boston (US)", "value": 3156.0}, {"name": "Delhi (IN)", "value": 3099.0}, {"name": "Hyderabad (IN)", "value": 2283.0}, {"name": "Toronto (CA)", "value": 1993.0}, {"name": "Los Angeles (US)", "value": 1903.0}, {"name": "Washington (US)", "value": 1795.0}, {"name": "Chicago (US)", "value": 1776.0}, {"name": "Berlin (DE)", "value": 1651.0}, {"name": "Tokyo (JP)", "value": 1623.0}, {"name": "Pune (IN)", "value": 1609.0}, {"name": "Amsterdam (NL)", "value": 1580.0}, {"name": "Mumbai (IN)", "value": 1461.0}, {"name": "Madrid (ES)", "value": 1337.0}, {"name": "Austin (US)", "value": 1314.0}, {"name": "Chennai (IN)", "value": 1288.0}, {"name": "Atlanta (US)", "value": 1145.0}, {"name": "Barcelona (ES)", "value": 1085.0}], "geo": "metros", "measure": "absolute", "tier": 2, "excl_inus": false}, "metros_percapita_tier0": {"title": "Top 25 metropolitan areas by AI talent per capita \u2014 Tier 0", "data": [{"name": "San Jose (US)", "value": 4.23}, {"name": "San Francisco (US)", "value": 2.59}, {"name": "Seattle (US)", "value": 2.2}, {"name": "Amsterdam (NL)", "value": 2.08}, {"name": "Frankfurt Am Main (DE)", "value": 1.19}, {"name": "Edinburgh (GB)", "value": 1.08}, {"name": "Stuttgart (DE)", "value": 1.03}, {"name": "Bengaluru (IN)", "value": 0.99}, {"name": "Rotterdam (NL)", "value": 0.97}, {"name": "Boston (US)", "value": 0.89}, {"name": "London (GB)", "value": 0.86}, {"name": "Austin (US)", "value": 0.84}, {"name": "Stockholm (SE)", "value": 0.76}, {"name": "Kitchener (CA)", "value": 0.71}, {"name": "Toulouse (FR)", "value": 0.67}, {"name": "Berlin (DE)", "value": 0.66}, {"name": "Bristol (GB)", "value": 0.66}, {"name": "Dublin (IE)", "value": 0.65}, {"name": "Helsinki (FI)", "value": 0.62}, {"name": "Oslo (NO)", "value": 0.59}, {"name": "Paris (FR)", "value": 0.59}, {"name": "Bologna (IT)", "value": 0.52}, {"name": "Basel (CH)", "value": 0.52}, {"name": "Raleigh (US)", "value": 0.52}, {"name": "Pittsburgh (US)", "value": 0.51}], "geo": "metros", "measure": "percapita", "tier": 0, "excl_inus": false}, "metros_percapita_tier1": {"title": "Top 25 metropolitan areas by AI talent per capita \u2014 Tier 1", "data": [{"name": "San Jose (US)", "value": 17.0}, {"name": "San Francisco (US)", "value": 10.0}, {"name": "Seattle (US)", "value": 8.86}, {"name": "Amsterdam (NL)", "value": 6.57}, {"name": "Frankfurt Am Main (DE)", "value": 3.64}, {"name": "Boston (US)", "value": 3.61}, {"name": "Bengaluru (IN)", "value": 3.5}, {"name": "Austin (US)", "value": 3.38}, {"name": "Stuttgart (DE)", "value": 3.16}, {"name": "Rotterdam (NL)", "value": 3.05}, {"name": "Stockholm (SE)", "value": 2.99}, {"name": "Kitchener (CA)", "value": 2.89}, {"name": "Edinburgh (GB)", "value": 2.81}, {"name": "Dublin (IE)", "value": 2.74}, {"name": "London (GB)", "value": 2.25}, {"name": "Raleigh (US)", "value": 2.08}, {"name": "Pittsburgh (US)", "value": 2.04}, {"name": "Berlin (DE)", "value": 2.03}, {"name": "Helsinki (FI)", "value": 2.01}, {"name": "Oslo (NO)", "value": 1.95}, {"name": "Toronto (CA)", "value": 1.93}, {"name": "Toulouse (FR)", "value": 1.86}, {"name": "Vancouver (CA)", "value": 1.85}, {"name": "Bristol (GB)", "value": 1.71}, {"name": "Washington (US)", "value": 1.7}], "geo": "metros", "measure": "percapita", "tier": 1, "excl_inus": false}, "metros_percapita_tier2": {"title": "Top 25 metropolitan areas by AI talent per capita \u2014 Tier 2", "data": [{"name": "San Jose (US)", "value": 3.47}, {"name": "San Francisco (US)", "value": 2.12}, {"name": "Seattle (US)", "value": 1.8}, {"name": "Amsterdam (NL)", "value": 1.4}, {"name": "Frankfurt Am Main (DE)", "value": 0.83}, {"name": "Boston (US)", "value": 0.73}, {"name": "Stuttgart (DE)", "value": 0.72}, {"name": "Austin (US)", "value": 0.69}, {"name": "Rotterdam (NL)", "value": 0.65}, {"name": "Stockholm (SE)", "value": 0.62}, {"name": "Edinburgh (GB)", "value": 0.61}, {"name": "Bengaluru (IN)", "value": 0.55}, {"name": "Kitchener (CA)", "value": 0.49}, {"name": "London (GB)", "value": 0.48}, {"name": "Berlin (DE)", "value": 0.46}, {"name": "Raleigh (US)", "value": 0.42}, {"name": "Pittsburgh (US)", "value": 0.42}, {"name": "Toulouse (FR)", "value": 0.41}, {"name": "Seoul (KR)", "value": 0.4}, {"name": "Helsinki (FI)", "value": 0.4}, {"name": "Basel (CH)", "value": 0.4}, {"name": "Bristol (GB)", "value": 0.37}, {"name": "Paris (FR)", "value": 0.36}, {"name": "Washington (US)", "value": 0.34}, {"name": "Denver (US)", "value": 0.34}], "geo": "metros", "measure": "percapita", "tier": 2, "excl_inus": false}};
+
+var state = { geo: 'countries', measure: 'absolute', tier: 1, exclInUs: false };
+
+function getKey(g,m,t,e) { var k=g+'_'+m+'_tier'+t; if(e) k+='_excl'; return k; }
+function hasData(g,m,t,e) { return !!CHART_DATA[getKey(g,m,t,e)]; }
+function getAvailTiers(g,m) { var t=[]; for(var i=0;i<=2;i++) if(hasData(g,m,i,false)||hasData(g,m,i,true)) t.push(i); return t; }
+
+function formatVal(v,m) {
+  if(m==='percapita') return v.toFixed(2);
+  if(v>=1000) { var s=Math.round(v).toString(),r=''; for(var i=s.length-1,c=0;i>=0;i--,c++) { if(c>0&&c%3===0) r=','+r; r=s[i]+r; } return r; }
+  return v.toString();
+}
+
+function updateToggle(gid,val) { var b=document.getElementById(gid).querySelectorAll('.toggle-btn'); for(var i=0;i<b.length;i++) { if(b[i].getAttribute('data-val')===String(val)) b[i].classList.add('active'); else b[i].classList.remove('active'); } }
+
+function updateTierDisabled() {
+  var a=getAvailTiers(state.geo,state.measure);
+  var b=document.getElementById('tier-group').querySelectorAll('.toggle-btn');
+  for(var i=0;i<b.length;i++) { var t=parseInt(b[i].getAttribute('data-val')); b[i].disabled=a.indexOf(t)===-1; if(b[i].disabled) b[i].classList.remove('active'); }
+  if(a.indexOf(state.tier)===-1) { state.tier=a[0]||1; updateToggle('tier-group',state.tier); }
+}
+
+function updateExcl() {
+  var ce=hasData(state.geo,state.measure,state.tier,true), hm=hasData(state.geo,state.measure,state.tier,false);
+  var c=document.getElementById('excl-container');
+  if(ce&&hm) c.style.display='block'; else { c.style.display='none'; if(!hm&&ce) state.exclInUs=true; else state.exclInUs=false; }
+  var tk=document.getElementById('excl-track'); if(state.exclInUs) tk.classList.add('on'); else tk.classList.remove('on');
+}
+
+function render() {
+  updateTierDisabled(); updateExcl();
+  var key=getKey(state.geo,state.measure,state.tier,state.exclInUs);
+  var chart=CHART_DATA[key]; if(!chart) return;
+  document.getElementById('chart-title').textContent=chart.title;
+  document.getElementById('axis-label').textContent=state.measure==='percapita'?'PER 1,000 INHABITANTS':'AI TALENT (HEADCOUNT)';
+  var area=document.getElementById('chart-area'); while(area.firstChild) area.removeChild(area.firstChild);
+  var data=chart.data, maxVal=0, ns='http://www.w3.org/2000/svg';
+  for(var i=0;i<data.length;i++) if(data[i].value>maxVal) maxVal=data[i].value;
+  var barH=data.length>20?26:28, labelW=160, barAreaW=440, barX=labelW+8;
+  for(var i=0;i<data.length;i++) {
+    var d=data[i], y=i*barH, w=(d.value/maxVal)*barAreaW;
+    var t=document.createElementNS(ns,'text'); t.setAttribute('x',labelW); t.setAttribute('y',y+barH/2+4); t.setAttribute('text-anchor','end'); t.setAttribute('font-size','12.5'); t.setAttribute('font-weight','500'); t.setAttribute('fill','#2a2a2a'); t.textContent=d.name; area.appendChild(t);
+    var r=document.createElementNS(ns,'rect'); r.setAttribute('x',barX); r.setAttribute('y',y+3); r.setAttribute('width','0'); r.setAttribute('height',barH-8); r.setAttribute('rx','3'); r.setAttribute('fill','#6c9fc6'); r.classList.add('bar-rect'); area.appendChild(r);
+    (function(r2,tw,dl){ setTimeout(function(){ r2.setAttribute('width',tw); },dl); })(r,w,i*15+30);
+    var v=document.createElementNS(ns,'text'); v.setAttribute('x',barX+w+8); v.setAttribute('y',y+barH/2+4); v.setAttribute('text-anchor','start'); v.setAttribute('font-size','11.5'); v.setAttribute('font-weight','600'); v.setAttribute('fill','#4a4a4a'); v.textContent=formatVal(d.value,state.measure); area.appendChild(v);
+  }
+  var totalH=data.length*barH+200; var svg=document.querySelector('svg'); svg.setAttribute('height',totalH); svg.setAttribute('viewBox','0 0 720 '+totalH);
+  document.getElementById('source-line').setAttribute('y1',totalH-28); document.getElementById('source-line').setAttribute('y2',totalH-28);
+  document.getElementById('source-text').setAttribute('y',totalH-12);
+}
+
+function setGeo(v) { state.geo=v; updateToggle('geo-group',v); render(); }
+function setMeasure(v) { state.measure=v; updateToggle('measure-group',v); render(); }
+function setTier(v) { var a=getAvailTiers(state.geo,state.measure); if(a.indexOf(v)===-1) return; state.tier=v; updateToggle('tier-group',v); render(); }
+function toggleExcl() { state.exclInUs=!state.exclInUs; render(); }
+
+setTimeout(render,100);
+// ]]>
+</script>
+</svg>
