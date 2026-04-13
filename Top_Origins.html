@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foreign Origin of AI Talent — Interface</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #ffffff;
+    --black: #202020;
+    --petrol: #134550;
+    --steel: #6C9FC6;
+    --lavender: #E0E3FF;
+    --europe-blue: #3C50FF;
+    --brown: #713333;
+    --mocha: #DEA580;
+    --ecru: #F9F4CA;
+    --orange: #FF7F48;
+    --gray-light: #f2f3f5;
+    --gray-mid: #8b8f96;
+    --gray-border: #e5e7eb;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 28px 24px 20px;
+  }
+
+  .accent-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--mocha), var(--lavender));
+    margin-bottom: 20px;
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .logo-mark { height: 18px; opacity: 0.5; }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--black);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--gray-mid);
+    font-weight: 400;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .divider {
+    height: 2px;
+    background: var(--black);
+    margin-bottom: 16px;
+  }
+
+  /* Dropdown */
+  .controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .controls label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--gray-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .country-select {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--petrol);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 32px 8px 14px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    min-width: 160px;
+  }
+
+  .country-select:focus { outline: 2px solid var(--steel); outline-offset: 2px; }
+
+  /* Chart header */
+  .chart-header {
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .chart-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    letter-spacing: -0.14px;
+  }
+
+  .axis-label {
+    font-size: 10px;
+    color: var(--gray-mid);
+    letter-spacing: 0.6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: #4a4a4a;
+  }
+
+  .legend-swatch {
+    width: 14px;
+    height: 10px;
+    border-radius: 2px;
+    border: 0.5px solid rgba(32,32,32,0.15);
+  }
+
+  /* Chart */
+  .chart-area { position: relative; }
+
+  svg.chart {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Source */
+  .source-line {
+    height: 1px;
+    background: var(--gray-border);
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+
+  .source-text {
+    font-size: 10.5px;
+    color: #9ca3af;
+    text-align: right;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 100;
+    line-height: 1.6;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 200px;
+  }
+
+  .tooltip.visible { opacity: 0.94; }
+  .tooltip .tt-title { font-weight: 600; margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="accent-bar"></div>
+
+  <div class="header">
+    <div><h1>Foreign Origin of AI Talent</h1></div>
+    <svg class="logo-mark" viewBox="0 0 4545 872" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#202020" d="M1293,281c-151,0-232,123-232,259s81,257,239,257c93,0,178-43,208-136l-92-16c-25,50-65,72-116,72-89.7,0-138.51-61.79-140.9-152h352.9v-34c0-185-109-250-219-250Zm-133.75,212c3.65-67.72,48.52-131,133.75-131s125,59,125,131h-258.75Z"/>
+      <rect fill="#202020" x="18" y="286" width="98" height="500"/>
+      <path fill="#202020" d="M68,91C28,91,0,118,0,156s28,66,68,66,67-27,67-66-28-65-67-65Z"/>
+      <path fill="#202020" d="M887,633V366h124v-80h-124v-119h-91v65c0,35-19,54-54,54h-53v80h102v267c0,99,57,153,163,153h66v-86h-66c-43,0-67-24-67-67Z"/>
+      <path fill="#202020" d="M465,281c-66,0-129,28-154,87v-82h-92v500h96V490c0-73,47-126,118-126,49,0,105,31,105,116v306h96V469c0-118-59-188-169-188Z"/>
+      <path fill="#202020" d="M3418,281c-151,0-232,123-232,259s81,257,239,257c93,0,178-43,208-136l-92-16c-25,50-65,72-116,72-89.7,0-138.51-61.79-140.9-152h352.9v-34c0-185-109-250-219-250Zm-133.75,212c3.65-67.72,48.52-131,133.75-131s125,59,125,131h-258.75Z"/>
+      <path fill="#202020" d="M4456,86h89V0h-89c-60.26,0-106.63,20.34-138,52.37-31.37-32.03-77.74-52.37-138-52.37h-89V86h89c58,0,90,32,90,90V696c0,58-32,90-90,90h-89v86h89c60.26,0,106.63-20.34,138-52.37,31.37,32.03,77.74,52.37,138,52.37h89v-86h-89c-58,0-90-32-90-90V176c0-58,32-90,90-90Z"/>
+      <path fill="#202020" d="M2929,364c59,0,102,37,113,97l92-16c-25-106-109-164-207-164-145,0-231,112-231,257s86,259,231,259c98,0,182-58,207-164l-92-16c-11,60-54,97-113,97-97,0-134-85-134-178s37-172,134-172Z"/>
+      <path fill="#202020" d="M1922,239V786h96V366h161v-80h-161v-47c0-43,24-67,67-67h94V86h-94c-106,0-163,54-163,153Z"/>
+      <path fill="#202020" d="M2424,281c-104,0-188,48-212,147l91,20c14-58,59-89,121-89s96,35,96,77c0,35-14,47-65,54l-103,15c-96,14-151,63-151,140,0,96,84,152,170,152,65,0,128-28,153-87v76h92V455c0-118-75-174-192-174Zm96,307c0,73-54,131-129,131-53,0-94-25-94-74,0-39,33-67,96-77l66-11c31-5,49-10,61-19v50Z"/>
+      <path fill="#202020" d="M1687,368v-82h-92v500h96V487c0-72,44-112,125-112h45v-89h-45c-52,0-107,29-129,82Z"/>
+    </svg>
+  </div>
+
+  <p class="subtitle">Undergraduate degree background of AI talent by destination country, 2024 vs 2025</p>
+  <div class="divider"></div>
+
+  <div class="controls">
+    <label>Destination</label>
+    <select class="country-select" id="country-select" onchange="render(this.value)"></select>
+  </div>
+
+  <div class="chart-header">
+    <div>
+      <div class="chart-title" id="chart-title"></div>
+      <div class="axis-label">Percentage of AI talent (%)</div>
+    </div>
+    <div class="legend">
+      <div class="legend-item">
+        <span class="legend-swatch" style="background: var(--lavender);"></span>
+        <span>2024</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-swatch" style="background: var(--orange);"></span>
+        <span>2025</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-area">
+    <svg class="chart" id="chart-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="source-line"></div>
+  <div class="source-text">Source: Revelio Labs, Apr. 2024 + Sept. 2025 — analysed by Interface</div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tt-title" id="tt-title"></div>
+  <div id="tt-body"></div>
+</div>
+
+<script>
+var COUNTRIES = {
+  "EU27": {
+    origins: ["Spain","Netherlands","India","Italy","Germany"],
+    y2024: [4.16,8.36,7.69,13.33,13.20],
+    y2025: [4.14,7.23,8.29,14.38,14.59]
+  },
+  "United States": {
+    origins: ["Iran","Canada","China","India","United States"],
+    y2024: [1.36,1.43,10.62,15.64,62.08],
+    y2025: [1.09,1.34,7.73,19.01,62.19]
+  },
+  "India": {
+    origins: ["Malaysia","United Kingdom","Pakistan","United States","India"],
+    y2024: [0.06,0.09,0.11,0.80,98.57],
+    y2025: [0.08,0.08,0.10,0.73,98.69]
+  },
+  "United Kingdom": {
+    origins: ["China","Nigeria","United States","India","United Kingdom"],
+    y2024: [4.45,1.70,4.31,12.11,51.10],
+    y2025: [3.18,3.30,3.54,15.80,50.82]
+  },
+  "Canada": {
+    origins: ["United States","China","Iran","India","Canada"],
+    y2024: [3.72,5.77,8.27,15.38,51.55],
+    y2025: [3.49,4.62,6.39,19.07,50.19]
+  },
+  "Germany": {
+    origins: ["United States","Iran","Turkey","India","Germany"],
+    y2024: [2.90,3.22,2.97,14.10,46.00],
+    y2025: [2.61,2.79,2.86,14.40,49.78]
+  },
+  "Australia": {
+    origins: ["United States","United Kingdom","China","India","Australia"],
+    y2024: [2.65,2.69,7.76,12.65,51.40],
+    y2025: [2.45,2.78,6.20,15.93,51.64]
+  },
+  "Italy": {
+    origins: ["United Kingdom","Pakistan","India","Iran","Italy"],
+    y2024: [0.63,0.64,1.20,1.78,89.42],
+    y2025: [0.66,0.75,1.17,1.75,89.62]
+  },
+  "Netherlands": {
+    origins: ["Italy","China","Turkey","India","Netherlands"],
+    y2024: [2.91,3.60,3.14,6.94,58.97],
+    y2025: [2.88,3.31,3.49,7.59,56.92]
+  },
+  "Singapore": {
+    origins: ["Australia","United Kingdom","India","China","Singapore"],
+    y2024: [3.10,4.30,11.16,15.33,48.64],
+    y2025: [5.20,6.67,10.76,10.78,50.23]
+  },
+  "Indonesia": {
+    origins: ["United Kingdom","Australia","Malaysia","United States","Indonesia"],
+    y2024: [0.34,0.56,0.79,1.09,95.06],
+    y2025: [0.37,0.64,0.71,1.10,95.10]
+  },
+  "Israel": {
+    origins: ["France","United Kingdom","Russia","United States","Israel"],
+    y2024: [0.44,0.67,1.05,2.12,93.25],
+    y2025: [0.31,0.77,1.22,2.04,93.37]
+  },
+  "Switzerland": {
+    origins: ["United Kingdom","United States","Germany","Italy","Switzerland"],
+    y2024: [3.77,4.50,7.34,10.29,32.71],
+    y2025: [4.03,4.25,8.55,10.21,35.78]
+  },
+  "Spain": {
+    origins: ["Argentina","United States","United Kingdom","Italy","Spain"],
+    y2024: [1.15,3.53,3.83,4.95,58.43],
+    y2025: [1.99,4.01,4.15,5.14,54.01]
+  },
+  "United Arab Emirates": {
+    origins: ["Egypt","United Kingdom","Pakistan","United Arab Emirates","India"],
+    y2024: [5.46,5.26,7.05,14.85,28.19],
+    y2025: [5.43,6.14,6.85,15.50,33.36]
+  },
+  "France": {
+    origins: ["United States","China","Italy","India","France"],
+    y2024: [3.86,6.24,6.09,7.02,33.33],
+    y2025: [4.28,4.47,5.59,6.66,35.63]
+  },
+  "Brazil": {
+    origins: ["India","Peru","United Kingdom","United States","Brazil"],
+    y2024: [0.25,0.70,0.53,1.89,91.97],
+    y2025: [0.37,0.38,0.46,1.87,93.24]
+  },
+  "Turkey": {
+    origins: ["United Kingdom","Syria","United States","Iran","Turkey"],
+    y2024: [0.48,0.65,1.35,2.72,87.77],
+    y2025: [0.50,0.60,1.19,2.52,89.43]
+  },
+  "Ireland": {
+    origins: ["Italy","Brazil","United Kingdom","India","Ireland"],
+    y2024: [2.72,2.48,3.39,21.93,42.86],
+    y2025: [2.11,2.77,3.16,29.76,39.58]
+  },
+  "Saudi Arabia": {
+    origins: ["Pakistan","India","Egypt","United States","Saudi Arabia"],
+    y2024: [3.49,3.59,4.66,8.59,64.80],
+    y2025: [5.18,5.83,6.56,8.23,58.02]
+  },
+  "South Korea": {
+    origins: ["Vietnam","India","Pakistan","United States","South Korea"],
+    y2024: [0.99,1.14,1.13,7.59,80.87],
+    y2025: [1.21,1.62,1.65,8.37,77.62]
+  },
+  "Japan": {
+    origins: ["Indonesia","India","United States","China","Japan"],
+    y2024: [1.90,6.98,9.41,11.12,46.78],
+    y2025: [2.13,9.45,9.53,10.12,44.73]
+  },
+  "Sweden": {
+    origins: ["United States","Iran","China","India","Sweden"],
+    y2024: [3.49,6.68,7.79,12.73,33.17],
+    y2025: [3.54,5.01,6.69,13.45,35.27]
+  },
+  "Denmark": {
+    origins: ["United States","China","Italy","India","Denmark"],
+    y2024: [2.44,2.89,3.15,3.35,61.22],
+    y2025: [2.57,2.65,2.95,4.05,60.73]
+  },
+  "South Africa": {
+    origins: ["India","United Kingdom","United States","Zimbabwe","South Africa"],
+    y2024: [0.77,1.20,1.04,1.51,90.80],
+    y2025: [0.89,1.00,1.19,1.29,91.61]
+  },
+  "Belgium": {
+    origins: ["Netherlands","Iran","Italy","India","Belgium"],
+    y2024: [2.83,2.98,4.19,5.29,55.82],
+    y2025: [2.43,2.58,4.34,4.88,58.81]
+  },
+  "Poland": {
+    origins: ["United Kingdom","India","Ukraine","Belarus","Poland"],
+    y2024: [3.08,3.29,4.00,5.88,70.92],
+    y2025: [2.93,3.21,4.43,5.79,67.83]
+  },
+  "Mexico": {
+    origins: ["Colombia","India","United States","Brazil","Mexico"],
+    y2024: [0.44,0.72,2.89,5.55,83.06],
+    y2025: [0.63,1.43,2.77,4.31,84.95]
+  },
+  "Finland": {
+    origins: ["China","Iran","Pakistan","India","Finland"],
+    y2024: [4.42,5.39,3.45,6.69,50.24],
+    y2025: [2.93,3.76,3.97,5.47,59.06]
+  },
+  "Portugal": {
+    origins: ["Russia","United States","United Kingdom","Brazil","Portugal"],
+    y2024: [1.45,1.99,1.69,7.95,69.10],
+    y2025: [1.70,1.93,2.02,8.40,69.59]
+  },
+  "Austria": {
+    origins: ["Iran","India","Italy","Germany","Austria"],
+    y2024: [3.20,3.95,4.24,6.92,49.62],
+    y2025: [3.02,3.83,3.97,6.64,51.02]
+  },
+  "Greece": {
+    origins: ["Cyprus","Italy","United States","United Kingdom","Greece"],
+    y2024: [0.26,0.65,1.69,7.41,86.48],
+    y2025: [0.37,0.37,1.35,6.64,87.93]
+  },
+  "Romania": {
+    origins: ["Germany","United States","Netherlands","United Kingdom","Romania"],
+    y2024: [0.52,1.10,0.58,3.87,88.74],
+    y2025: [0.51,0.61,0.90,3.50,90.80]
+  },
+  "New Zealand": {
+    origins: ["United Kingdom","United States","China","India","New Zealand"],
+    y2024: [3.37,4.64,7.43,8.59,55.60],
+    y2025: [3.74,4.04,7.38,11.09,53.72]
+  },
+  "Norway": {
+    origins: ["United Kingdom","Iran","United States","India","Norway"],
+    y2024: [4.41,4.08,5.35,6.73,44.62],
+    y2025: [3.54,3.66,4.01,6.46,47.88]
+  },
+  "Hungary": {
+    origins: ["Romania","Russia","India","United Kingdom","Hungary"],
+    y2024: [1.23,1.33,1.99,1.42,81.16],
+    y2025: [1.04,1.09,1.66,1.69,81.91]
+  },
+  "Czech Republic": {
+    origins: ["United Kingdom","Ukraine","Slovakia","India","Czech Republic"],
+    y2024: [1.71,1.19,2.64,2.56,74.42],
+    y2025: [2.24,2.26,2.74,3.14,68.85]
+  }
+};
+
+var ns = 'http://www.w3.org/2000/svg';
+
+function el(tag, attrs) {
+  var e = document.createElementNS(ns, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// Populate dropdown
+var sel = document.getElementById('country-select');
+var keys = Object.keys(COUNTRIES);
+keys.forEach(function(k) {
+  var opt = document.createElement('option');
+  opt.value = k;
+  opt.textContent = k;
+  sel.appendChild(opt);
+});
+
+function render(country) {
+  var d = COUNTRIES[country];
+  if (!d) return;
+
+  document.getElementById('chart-title').textContent =
+    'Undergraduate degree background of AI talent in ' + country;
+
+  var svg = document.getElementById('chart-svg');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  var container = svg.parentElement;
+  var totalW = container.offsetWidth;
+
+  var labelW = 140;
+  var chartL = labelW + 10;
+  var chartR = totalW - 50;
+  var chartW = chartR - chartL;
+
+  var n = d.origins.length;
+  var rowH = 52;
+  var barH = 14;
+  var gap = 3;
+  var topPad = 8;
+  var totalH = n * rowH + 30;
+
+  svg.setAttribute('viewBox', '0 0 ' + totalW + ' ' + totalH);
+  svg.style.height = totalH + 'px';
+
+  // Determine max value for scale
+  var allVals = d.y2024.concat(d.y2025);
+  var maxVal = Math.max.apply(null, allVals);
+  // Round up to a nice number
+  var niceMax;
+  if (maxVal <= 5) niceMax = 5;
+  else if (maxVal <= 10) niceMax = 10;
+  else if (maxVal <= 20) niceMax = 20;
+  else if (maxVal <= 30) niceMax = 30;
+  else if (maxVal <= 50) niceMax = 50;
+  else if (maxVal <= 75) niceMax = 75;
+  else niceMax = 100;
+
+  var stepVal;
+  if (niceMax <= 10) stepVal = 2;
+  else if (niceMax <= 30) stepVal = 5;
+  else if (niceMax <= 50) stepVal = 10;
+  else stepVal = 20;
+
+  function valToPx(v) { return chartL + (v / niceMax) * chartW; }
+
+  // Grid lines
+  for (var v = 0; v <= niceMax; v += stepVal) {
+    var gx = valToPx(v);
+    svg.appendChild(el('line', {
+      x1: gx, y1: topPad, x2: gx, y2: n * rowH + topPad,
+      stroke: '#ebedf0', 'stroke-width': '1'
+    }));
+    var gLabel = el('text', {
+      x: gx, y: n * rowH + topPad + 16,
+      'text-anchor': 'middle', 'font-size': '10',
+      fill: '#8b8f96', 'font-family': 'Inter, system-ui, sans-serif'
+    });
+    gLabel.textContent = v + '%';
+    svg.appendChild(gLabel);
+  }
+
+  // Rows
+  for (var i = 0; i < n; i++) {
+    var cy = topPad + i * rowH;
+    var barCenter = cy + rowH / 2;
+
+    // Zebra
+    if (i % 2 === 0) {
+      svg.appendChild(el('rect', {
+        x: 0, y: cy, width: totalW, height: rowH,
+        fill: '#f8f9fb', opacity: '0.5'
+      }));
+    }
+
+    // Country label
+    var txt = el('text', {
+      x: labelW, y: barCenter + 2,
+      'text-anchor': 'end', 'font-size': '12.5',
+      'font-weight': '500', fill: '#2a2a2a',
+      'font-family': 'Inter, system-ui, sans-serif'
+    });
+    txt.textContent = d.origins[i];
+    svg.appendChild(txt);
+
+    // 2024 bar
+    var w24 = d.y2024[i] !== undefined ? valToPx(d.y2024[i]) - chartL : 0;
+    if (w24 > 0) {
+      var bar24 = el('rect', {
+        x: chartL, y: barCenter - barH - gap / 2,
+        width: Math.max(w24, 2), height: barH,
+        fill: '#E0E3FF', rx: '2'
+      });
+      bar24.addEventListener('mouseenter', makeTip(d.origins[i], d.y2024[i], d.y2025[i]));
+      bar24.addEventListener('mouseleave', hideTip);
+      svg.appendChild(bar24);
+
+      // Value label for 2024
+      if (d.y2024[i] >= 1) {
+        var vl24 = el('text', {
+          x: chartL + w24 + 5, y: barCenter - gap / 2 - 3,
+          'font-size': '10', fill: '#8b8f96',
+          'font-family': 'Inter, system-ui, sans-serif', 'font-weight': '500'
+        });
+        vl24.textContent = d.y2024[i].toFixed(1) + '%';
+        svg.appendChild(vl24);
+      }
+    }
+
+    // 2025 bar
+    var w25 = d.y2025[i] !== undefined ? valToPx(d.y2025[i]) - chartL : 0;
+    if (w25 > 0) {
+      var bar25 = el('rect', {
+        x: chartL, y: barCenter + gap / 2,
+        width: Math.max(w25, 2), height: barH,
+        fill: '#FF7F48', rx: '2'
+      });
+      bar25.addEventListener('mouseenter', makeTip(d.origins[i], d.y2024[i], d.y2025[i]));
+      bar25.addEventListener('mouseleave', hideTip);
+      svg.appendChild(bar25);
+
+      // Value label for 2025
+      if (d.y2025[i] >= 1) {
+        var vl25 = el('text', {
+          x: chartL + w25 + 5, y: barCenter + gap / 2 + barH - 3,
+          'font-size': '10', fill: '#8b8f96',
+          'font-family': 'Inter, system-ui, sans-serif', 'font-weight': '500'
+        });
+        vl25.textContent = d.y2025[i].toFixed(1) + '%';
+        svg.appendChild(vl25);
+      }
+    }
+  }
+}
+
+function makeTip(origin, v24, v25) {
+  return function(e) {
+    var tt = document.getElementById('tooltip');
+    document.getElementById('tt-title').textContent = origin;
+    var body = '';
+    if (v24 !== undefined) body += '<span style="color:#E0E3FF">2024: ' + v24.toFixed(1) + '%</span>';
+    if (v24 !== undefined && v25 !== undefined) body += '<br>';
+    if (v25 !== undefined) body += '<span style="color:#FF7F48">2025: ' + v25.toFixed(1) + '%</span>';
+    if (v24 !== undefined && v25 !== undefined) {
+      var diff = v25 - v24;
+      var col = diff > 0 ? '#FF7F48' : '#6C9FC6';
+      body += '<br><span style="color:' + col + '">' + (diff > 0 ? '+' : '') + diff.toFixed(1) + ' pp</span>';
+    }
+    document.getElementById('tt-body').innerHTML = body;
+    tt.classList.add('visible');
+    tt.style.left = (e.clientX + 14) + 'px';
+    tt.style.top = (e.clientY - 10) + 'px';
+  };
+}
+
+function hideTip() {
+  document.getElementById('tooltip').classList.remove('visible');
+}
+
+// Mouse move for tooltip tracking
+document.addEventListener('mousemove', function(e) {
+  var tt = document.getElementById('tooltip');
+  if (tt.classList.contains('visible')) {
+    tt.style.left = (e.clientX + 14) + 'px';
+    tt.style.top = (e.clientY - 10) + 'px';
+  }
+});
+
+// Initial render
+window.addEventListener('load', function() { render('EU27'); });
+window.addEventListener('resize', function() { render(document.getElementById('country-select').value); });
+</script>
+</body>
+</html>

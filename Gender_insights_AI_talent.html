@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Talent Gender Gap — Interface</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #ffffff;
+    --black: #202020;
+    --petrol: #134550;
+    --steel: #6C9FC6;
+    --lavender: #E0E3FF;
+    --europe-blue: #3C50FF;
+    --brown: #713333;
+    --mocha: #DEA580;
+    --ecru: #F9F4CA;
+    --orange: #FF7F48;
+    --gray-light: #f2f3f5;
+    --gray-mid: #8b8f96;
+    --gray-border: #e5e7eb;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 24px 20px;
+    position: relative;
+  }
+
+  /* Gradient accent bar inspired by Interface visual style */
+  .accent-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--orange), var(--mocha), var(--lavender));
+    border-radius: 0;
+    margin-bottom: 20px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .logo-mark {
+    height: 18px;
+    opacity: 0.5;
+  }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--black);
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--gray-mid);
+    font-weight: 400;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .divider {
+    height: 2px;
+    background: var(--black);
+    margin-bottom: 16px;
+  }
+
+  /* Toggle controls */
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .toggle-group {
+    display: inline-flex;
+    border-radius: 6px;
+    border: 1px solid var(--gray-border);
+    overflow: hidden;
+    background: var(--gray-light);
+  }
+
+  .toggle-btn {
+    padding: 7px 14px;
+    border: none;
+    background: transparent;
+    color: #4a4a4a;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Inter', system-ui, sans-serif;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+    transition: all 0.15s ease;
+    line-height: 1.3;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background: #dde0e4;
+  }
+
+  .toggle-btn.active {
+    background: var(--petrol);
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* Chart header */
+  .chart-header {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .chart-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    letter-spacing: -0.14px;
+  }
+
+  .axis-label {
+    font-size: 10px;
+    color: var(--gray-mid);
+    letter-spacing: 0.6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: #4a4a4a;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 0.5px solid var(--black);
+  }
+
+  /* SVG chart */
+  svg.chart {
+    display: block;
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Source */
+  .source-line {
+    height: 1px;
+    background: var(--gray-border);
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .source-text {
+    font-size: 10.5px;
+    color: #9ca3af;
+    text-align: right;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 100;
+    line-height: 1.6;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .tooltip.visible { opacity: 0.94; }
+
+  .tooltip .tt-name { font-weight: 600; margin-bottom: 2px; }
+  .tooltip .tt-year { font-weight: 400; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="accent-bar"></div>
+
+  <div class="header">
+    <div>
+      <h1>AI Talent Gender Gap</h1>
+    </div>
+    <svg class="logo-mark" viewBox="0 0 4545 872" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#202020" d="M1293,281c-151,0-232,123-232,259s81,257,239,257c93,0,178-43,208-136l-92-16c-25,50-65,72-116,72-89.7,0-138.51-61.79-140.9-152h352.9v-34c0-185-109-250-219-250Zm-133.75,212c3.65-67.72,48.52-131,133.75-131s125,59,125,131h-258.75Z"/>
+      <rect fill="#202020" x="18" y="286" width="98" height="500"/>
+      <path fill="#202020" d="M68,91C28,91,0,118,0,156s28,66,68,66,67-27,67-66-28-65-67-65Z"/>
+      <path fill="#202020" d="M887,633V366h124v-80h-124v-119h-91v65c0,35-19,54-54,54h-53v80h102v267c0,99,57,153,163,153h66v-86h-66c-43,0-67-24-67-67Z"/>
+      <path fill="#202020" d="M465,281c-66,0-129,28-154,87v-82h-92v500h96V490c0-73,47-126,118-126,49,0,105,31,105,116v306h96V469c0-118-59-188-169-188Z"/>
+      <path fill="#202020" d="M3418,281c-151,0-232,123-232,259s81,257,239,257c93,0,178-43,208-136l-92-16c-25,50-65,72-116,72-89.7,0-138.51-61.79-140.9-152h352.9v-34c0-185-109-250-219-250Zm-133.75,212c3.65-67.72,48.52-131,133.75-131s125,59,125,131h-258.75Z"/>
+      <path fill="#202020" d="M4456,86h89V0h-89c-60.26,0-106.63,20.34-138,52.37-31.37-32.03-77.74-52.37-138-52.37h-89V86h89c58,0,90,32,90,90V696c0,58-32,90-90,90h-89v86h89c60.26,0,106.63-20.34,138-52.37,31.37,32.03,77.74,52.37,138,52.37h89v-86h-89c-58,0-90-32-90-90V176c0-58,32-90,90-90Z"/>
+      <path fill="#202020" d="M2929,364c59,0,102,37,113,97l92-16c-25-106-109-164-207-164-145,0-231,112-231,257s86,259,231,259c98,0,182-58,207-164l-92-16c-11,60-54,97-113,97-97,0-134-85-134-178s37-172,134-172Z"/>
+      <path fill="#202020" d="M1922,239V786h96V366h161v-80h-161v-47c0-43,24-67,67-67h94V86h-94c-106,0-163,54-163,153Z"/>
+      <path fill="#202020" d="M2424,281c-104,0-188,48-212,147l91,20c14-58,59-89,121-89s96,35,96,77c0,35-14,47-65,54l-103,15c-96,14-151,63-151,140,0,96,84,152,170,152,65,0,128-28,153-87v76h92V455c0-118-75-174-192-174Zm96,307c0,73-54,131-129,131-53,0-94-25-94-74,0-39,33-67,96-77l66-11c31-5,49-10,61-19v50Z"/>
+      <path fill="#202020" d="M1687,368v-82h-92v500h96V487c0-72,44-112,125-112h45v-89h-45c-52,0-107,29-129,82Z"/>
+    </svg>
+  </div>
+
+  <p class="subtitle">Female share and workforce parity across countries, 2024 vs 2025</p>
+  <div class="divider"></div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="toggle-group" id="view-group">
+      <button class="toggle-btn active" data-val="eu_share" onclick="setView('eu_share')">Female share (EU)</button>
+      <button class="toggle-btn" data-val="workforce" onclick="setView('workforce')">Workforce vs AI gap</button>
+    </div>
+    <div class="toggle-group" id="tier-group">
+      <button class="toggle-btn active" data-val="0" onclick="setTier(0)">Tier 0</button>
+      <button class="toggle-btn" data-val="1" onclick="setTier(1)">Tier 1</button>
+      <button class="toggle-btn" data-val="2" onclick="setTier(2)">Tier 2</button>
+    </div>
+  </div>
+
+  <!-- Chart header -->
+  <div class="chart-header">
+    <div>
+      <div class="chart-title" id="chart-title"></div>
+      <div class="axis-label" id="axis-label"></div>
+    </div>
+    <div class="legend" id="legend">
+      <div class="legend-item">
+        <span class="legend-dot" style="background: var(--lavender);"></span>
+        <span>2024</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot" id="legend-dot-2025" style="background: var(--steel);"></span>
+        <span>2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG Chart -->
+  <svg class="chart" id="chart-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <div class="source-line"></div>
+  <div class="source-text">Source: Revelio Labs, Sept. 2025 — analysed by Interface</div>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip">
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-year" id="tt-2024"></div>
+  <div class="tt-year" id="tt-2025"></div>
+</div>
+
+<script>
+var DATA = {
+  "eu_female_tier0":{"title":"Female share of AI talent in EU countries — Tier 0","eu_avg":36.7,"data":[{"name":"Germany","y2024":30.4,"y2025":28.9},{"name":"Denmark","y2024":31.2,"y2025":30.5},{"name":"Ireland","y2024":34.7,"y2025":30.8},{"name":"Hungary","y2024":36.2,"y2025":31.2},{"name":"Belgium","y2024":35.9,"y2025":31.2},{"name":"France","y2024":40.4,"y2025":34.4},{"name":"Austria","y2024":28.1,"y2025":34.9},{"name":"Spain","y2024":38.4,"y2025":35.8},{"name":"Greece","y2024":28.2,"y2025":37.6},{"name":"Italy","y2024":47.8,"y2025":38.4},{"name":"Netherlands","y2024":37.1,"y2025":39.2},{"name":"Portugal","y2024":40.6,"y2025":39.3},{"name":"Czech Republic","y2024":38.9,"y2025":39.4},{"name":"Poland","y2024":38.7,"y2025":41.5},{"name":"Sweden","y2024":29.0,"y2025":43.5},{"name":"Finland","y2024":52.1,"y2025":51.8}]},
+  "eu_female_tier1":{"title":"Female share of AI talent in EU countries — Tier 1","eu_avg":24.9,"data":[{"name":"Hungary","y2024":20.4,"y2025":16.2},{"name":"Portugal","y2024":25.0,"y2025":20.2},{"name":"Belgium","y2024":19.3,"y2025":21.0},{"name":"Germany","y2024":22.7,"y2025":22.4},{"name":"Poland","y2024":23.3,"y2025":23.1},{"name":"Austria","y2024":19.6,"y2025":23.2},{"name":"Greece","y2024":20.9,"y2025":24.0},{"name":"Denmark","y2024":25.7,"y2025":24.5},{"name":"Sweden","y2024":24.0,"y2025":24.5},{"name":"Netherlands","y2024":28.0,"y2025":24.6},{"name":"Czech Republic","y2024":29.4,"y2025":25.0},{"name":"Ireland","y2024":25.6,"y2025":25.3},{"name":"Spain","y2024":25.8,"y2025":27.2},{"name":"France","y2024":28.2,"y2025":29.7},{"name":"Italy","y2024":34.4,"y2025":31.0},{"name":"Finland","y2025":42.1}]},
+  "eu_female_tier2":{"title":"Female share of AI talent in EU countries — Tier 2","eu_avg":20.9,"data":[{"name":"Denmark","y2024":15.6,"y2025":10.9},{"name":"Greece","y2024":22.5,"y2025":15.3},{"name":"Austria","y2024":13.7,"y2025":15.9},{"name":"Sweden","y2024":17.2,"y2025":17.5},{"name":"Spain","y2024":17.5,"y2025":17.8},{"name":"Germany","y2024":21.4,"y2025":19.3},{"name":"Portugal","y2024":18.1,"y2025":19.7},{"name":"Belgium","y2024":22.7,"y2025":21.3},{"name":"Hungary","y2024":17.1,"y2025":22.0},{"name":"Ireland","y2024":27.1,"y2025":22.2},{"name":"Italy","y2024":28.1,"y2025":22.3},{"name":"Czech Republic","y2024":31.1,"y2025":23.4},{"name":"Poland","y2024":22.0,"y2025":23.9},{"name":"France","y2024":23.8,"y2025":24.6},{"name":"Netherlands","y2024":23.9,"y2025":24.6},{"name":"Finland","y2025":42.1}]},
+  "workforce_gap":{"title":"Gender gap: total workforce minus AI talent (pp)","eu_avg":null,"data":[{"name":"Iceland","y2025":22.5},{"name":"India","y2024":5.1,"y2025":1.5},{"name":"Latvia","y2024":22.5},{"name":"Finland","y2024":8.1,"y2025":5.1},{"name":"Italy","y2024":5.0,"y2025":6.0},{"name":"Slovenia","y2024":8.9,"y2025":8.4},{"name":"Turkey","y2024":8.6,"y2025":10.0},{"name":"Czech Republic","y2024":16.9,"y2025":16.0},{"name":"New Zealand","y2024":17.3,"y2025":16.1},{"name":"Lithuania","y2024":13.7,"y2025":16.7},{"name":"Poland","y2024":21.1,"y2025":17.9},{"name":"Canada","y2024":25.0,"y2025":19.0},{"name":"Ireland","y2024":18.1,"y2025":19.1},{"name":"United States","y2024":20.2,"y2025":19.4},{"name":"Greece","y2024":20.2,"y2025":19.4},{"name":"United Kingdom","y2024":20.4,"y2025":19.4},{"name":"Spain","y2024":21.7,"y2025":19.5},{"name":"Australia","y2024":20.2,"y2025":19.6},{"name":"Netherlands","y2024":19.0,"y2025":19.7},{"name":"France","y2024":21.5,"y2025":19.8},{"name":"Sweden","y2024":18.4,"y2025":20.1},{"name":"Mexico","y2024":21.3,"y2025":20.8},{"name":"Israel","y2024":22.1,"y2025":21.0},{"name":"Luxembourg","y2024":19.5,"y2025":21.2},{"name":"Estonia","y2024":22.5,"y2025":21.6},{"name":"Colombia","y2024":21.6,"y2025":21.8},{"name":"Denmark","y2024":17.0,"y2025":22.0},{"name":"Switzerland","y2024":19.4,"y2025":22.3},{"name":"Norway","y2024":23.2,"y2025":22.4},{"name":"Portugal","y2024":23.0,"y2025":22.8},{"name":"Germany","y2024":19.2,"y2025":23.3},{"name":"Chile","y2024":22.2,"y2025":23.8},{"name":"Belgium","y2024":23.5,"y2025":24.0},{"name":"Slovakia","y2024":24.0,"y2025":24.1},{"name":"Austria","y2024":23.6,"y2025":24.1},{"name":"South Korea","y2024":24.1,"y2025":24.2},{"name":"Hungary","y2024":26.4,"y2025":24.3},{"name":"Japan","y2024":24.4,"y2025":24.3}]}
+};
+
+var BRAND = {
+  petrol: '#134550',
+  steel: '#6C9FC6',
+  lavender: '#E0E3FF',
+  europeBlue: '#3C50FF',
+  brown: '#713333',
+  mocha: '#DEA580',
+  ecru: '#F9F4CA',
+  orange: '#FF7F48',
+  black: '#202020',
+  white: '#ffffff'
+};
+
+var COLORS_2025 = { 0: BRAND.steel, 1: BRAND.steel, 2: BRAND.orange };
+var state = { view: 'eu_share', tier: 0 };
+var ns = 'http://www.w3.org/2000/svg';
+
+function getDataKey() {
+  if (state.view === 'workforce') return 'workforce_gap';
+  return 'eu_female_tier' + state.tier;
+}
+
+function updateToggle(gid, val) {
+  var btns = document.getElementById(gid).querySelectorAll('.toggle-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', btns[i].getAttribute('data-val') === String(val));
+  }
+}
+
+function el(tag, attrs) {
+  var e = document.createElementNS(ns, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+function render() {
+  var key = getDataKey();
+  var chart = DATA[key];
+  if (!chart) return;
+
+  var isShare = state.view === 'eu_share';
+  var data = chart.data;
+  var eu_avg = chart.eu_avg;
+
+  // Update title
+  document.getElementById('chart-title').textContent = chart.title;
+  var axisText = isShare ? 'Female share of AI talent (%)' : 'Female share gap: total workforce − AI talent (pp)';
+  document.getElementById('axis-label').textContent = axisText;
+
+  // 2025 color
+  var col2025 = isShare ? (COLORS_2025[state.tier] || BRAND.steel) : BRAND.orange;
+  document.getElementById('legend-dot-2025').style.background = col2025;
+
+  // Show/hide tier toggle
+  document.getElementById('tier-group').style.display = isShare ? 'inline-flex' : 'none';
+
+  // Chart dims
+  var svgEl = document.getElementById('chart-svg');
+  var containerW = svgEl.parentElement.offsetWidth;
+  var totalW = containerW;
+  var labelW = 130;
+  var chartL = labelW + 10;
+  var chartR = totalW - 40;
+  var chartW = chartR - chartL;
+  var rowH = data.length > 20 ? 20 : 23;
+
+  // Scale
+  var maxVal = isShare ? 60 : 30;
+  var stepVal = isShare ? 10 : 5;
+  function valToPx(v) { return chartL + (v / maxVal) * chartW; }
+
+  // Build SVG
+  var totalH = data.length * rowH + 40;
+  svgEl.setAttribute('viewBox', '0 0 ' + totalW + ' ' + totalH);
+  svgEl.style.height = totalH + 'px';
+
+  // Clear
+  while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+
+  // Grid lines
+  for (var v = 0; v <= maxVal; v += stepVal) {
+    var gx = valToPx(v);
+    svgEl.appendChild(el('line', { x1: gx, y1: 0, x2: gx, y2: data.length * rowH + 4, stroke: '#ebedf0', 'stroke-width': '1' }));
+    var label = isShare ? v + '%' : '+' + v;
+    var gLabel = el('text', { x: gx, y: data.length * rowH + 18, 'text-anchor': 'middle', 'font-size': '10', fill: '#8b8f96', 'font-family': 'Inter, system-ui, sans-serif' });
+    gLabel.textContent = label;
+    svgEl.appendChild(gLabel);
+  }
+
+  // Parity line (50% for share view)
+  if (isShare) {
+    var px50 = valToPx(50);
+    svgEl.appendChild(el('line', { x1: px50, y1: 0, x2: px50, y2: data.length * rowH + 4, stroke: BRAND.mocha, 'stroke-width': '1.5', 'stroke-dasharray': '6,3', opacity: '0.6' }));
+    var pTxt = el('text', { x: px50, y: -8, 'text-anchor': 'middle', 'font-size': '9.5', fill: BRAND.mocha, 'font-weight': '500', 'font-family': 'Inter, system-ui, sans-serif' });
+    pTxt.textContent = 'Parity (50%)';
+    svgEl.appendChild(pTxt);
+  }
+
+  // EU average line
+  if (eu_avg !== null && eu_avg !== undefined) {
+    var pxAvg = valToPx(eu_avg);
+    svgEl.appendChild(el('line', { x1: pxAvg, y1: 0, x2: pxAvg, y2: data.length * rowH + 4, stroke: BRAND.europeBlue, 'stroke-width': '1.5', 'stroke-dasharray': '4,3', opacity: '0.5' }));
+    var avgTxt = el('text', { x: pxAvg, y: -8, 'text-anchor': 'middle', 'font-size': '9.5', fill: BRAND.europeBlue, 'font-weight': '500', 'font-family': 'Inter, system-ui, sans-serif' });
+    avgTxt.textContent = 'EU avg (' + eu_avg + '%)';
+    svgEl.appendChild(avgTxt);
+  }
+
+  // Parity for gap chart (0 line)
+  if (!isShare) {
+    var px0 = valToPx(0);
+    svgEl.appendChild(el('line', { x1: px0, y1: 0, x2: px0, y2: data.length * rowH + 4, stroke: BRAND.mocha, 'stroke-width': '1.5', 'stroke-dasharray': '6,3', opacity: '0.6' }));
+    var gTxt = el('text', { x: px0 + 4, y: -8, 'text-anchor': 'start', 'font-size': '9.5', fill: BRAND.mocha, 'font-weight': '500', 'font-family': 'Inter, system-ui, sans-serif' });
+    gTxt.textContent = 'Parity';
+    svgEl.appendChild(gTxt);
+  }
+
+  // Rows
+  for (var i = 0; i < data.length; i++) {
+    var d = data[i];
+    var cy = i * rowH + rowH / 2;
+    var has24 = d.y2024 !== undefined && d.y2024 !== null;
+    var has25 = d.y2025 !== undefined && d.y2025 !== null;
+
+    // Zebra row bg
+    if (i % 2 === 0) {
+      svgEl.appendChild(el('rect', { x: 0, y: cy - rowH / 2, width: totalW, height: rowH, fill: '#f8f9fb', opacity: '0.5' }));
+    }
+
+    // Country label
+    var txt = el('text', { x: labelW, y: cy + 4, 'text-anchor': 'end', 'font-size': '12', 'font-weight': '500', fill: '#2a2a2a', 'font-family': 'Inter, system-ui, sans-serif' });
+    txt.textContent = d.name;
+    svgEl.appendChild(txt);
+
+    // Connector line
+    if (has24 && has25) {
+      var lx1 = valToPx(Math.min(d.y2024, d.y2025));
+      var lx2 = valToPx(Math.max(d.y2024, d.y2025));
+      svgEl.appendChild(el('line', { x1: lx1, y1: cy, x2: lx2, y2: cy, stroke: '#c8cdd3', 'stroke-width': '1.5' }));
+    }
+
+    // 2024 dot
+    if (has24) {
+      var cx24 = valToPx(d.y2024);
+      var dot24 = el('circle', { cx: cx24, cy: cy, r: '5', fill: BRAND.lavender, stroke: BRAND.black, 'stroke-width': '0.5' });
+      dot24.setAttribute('data-idx', i);
+      dot24.addEventListener('mouseenter', showTooltip.bind(null, d, col2025));
+      dot24.addEventListener('mouseleave', hideTooltip);
+      svgEl.appendChild(dot24);
+    }
+
+    // 2025 dot
+    if (has25) {
+      var cx25 = valToPx(d.y2025);
+      var dot25 = el('circle', { cx: cx25, cy: cy, r: '5', fill: col2025, stroke: BRAND.black, 'stroke-width': '0.5' });
+      dot25.setAttribute('data-idx', i);
+      dot25.addEventListener('mouseenter', showTooltip.bind(null, d, col2025));
+      dot25.addEventListener('mouseleave', hideTooltip);
+      svgEl.appendChild(dot25);
+    }
+
+    // Change arrow
+    if (has24 && has25) {
+      var diff = d.y2025 - d.y2024;
+      // For share view: increase = good (petrol), decrease = bad (brown)
+      // For gap view: increase = bad (brown), decrease = good (petrol)
+      var arrowColor = diff > 0
+        ? (isShare ? BRAND.petrol : BRAND.brown)
+        : (isShare ? BRAND.brown : BRAND.petrol);
+
+      if (Math.abs(diff) > 0.5) {
+        var arrowX = valToPx(Math.max(d.y2024, d.y2025)) + 14;
+        var arrowTxt = el('text', { x: arrowX, y: cy + 3.5, 'font-size': '9', fill: arrowColor, 'font-weight': '600', 'font-family': 'Inter, system-ui, sans-serif' });
+        arrowTxt.textContent = (diff > 0 ? '\u25B2' : '\u25BC') + Math.abs(diff).toFixed(1);
+        svgEl.appendChild(arrowTxt);
+      }
+    }
+  }
+}
+
+function showTooltip(d, col2025, e) {
+  var tt = document.getElementById('tooltip');
+  var isShare = state.view === 'eu_share';
+  var has24 = d.y2024 !== undefined && d.y2024 !== null;
+  var has25 = d.y2025 !== undefined && d.y2025 !== null;
+
+  document.getElementById('tt-name').textContent = d.name;
+  document.getElementById('tt-2024').textContent = has24
+    ? '2024: ' + (isShare ? d.y2024.toFixed(1) + '%' : '+' + d.y2024.toFixed(1) + ' pp')
+    : '';
+  document.getElementById('tt-2024').style.color = BRAND.lavender;
+  document.getElementById('tt-2025').textContent = has25
+    ? '2025: ' + (isShare ? d.y2025.toFixed(1) + '%' : '+' + d.y2025.toFixed(1) + ' pp')
+    : '';
+  document.getElementById('tt-2025').style.color = col2025;
+
+  tt.classList.add('visible');
+  tt.style.left = (e.clientX + 14) + 'px';
+  tt.style.top = (e.clientY - 10) + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').classList.remove('visible');
+}
+
+function setView(v) {
+  state.view = v;
+  updateToggle('view-group', v);
+  render();
+}
+
+function setTier(t) {
+  state.tier = t;
+  updateToggle('tier-group', String(t));
+  render();
+}
+
+// Render on load
+window.addEventListener('load', function() { render(); });
+window.addEventListener('resize', function() { render(); });
+</script>
+</body>
+</html>
